@@ -1,0 +1,47 @@
+const { printBooks, borrowBook } = require("./Books");
+const { printUsers, borrowUser } = require("./Users");
+
+console.log("Books:");
+printBooks();
+console.log("\nRegistered Users:");
+printUsers();
+
+try {
+  const book = borrowBook(1);
+  const user = borrowUser(101);
+
+  console.log("\nBorrow Request:");
+  console.log(
+    `User: ${user.name}, Favorite Type: ${user.favoriteType}, Already Borrowed: ${user.borrowed}`
+  );
+  console.log(
+    `Book: ${book.name}, Type: ${book.type}, Borrowed: ${book.borrowed}`
+  );
+
+  if (book.borrowed) {
+    console.log("The book is already borrowed.");
+  } else if (user.borrowed) {
+    console.log("The user already has a borrowed book.");
+  } else if (book.type !== user.favoriteType) {
+    console.log("The book type does not match the user's preference.");
+  } else {
+    console.log("The book is successfully borrowed!");
+    book.borrowed = true;
+    user.borrowed = true;
+  }
+} catch (error) {
+  console.error("Error:", error.message);
+}
+
+console.log("\nTesting invalid inputs:");
+try {
+  borrowBook(999);
+} catch (error) {
+  console.error(error.message);
+}
+
+try {
+  borrowUser(999);
+} catch (error) {
+  console.error(error.message);
+}
