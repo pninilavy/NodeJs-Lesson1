@@ -1,0 +1,20 @@
+[
+  {
+    "id": 101,
+    "name": "aaa",
+    "favoriteType": "a",
+    "borrowed": false
+  },
+  {
+    "id": 102,
+    "name": "bbb",
+    "favoriteType": "b",
+    "borrowed": true
+  },
+  {
+    "id": 103,
+    "name": "ccc",
+    "favoriteType": "c",
+    "borrowed": false
+  }
+]

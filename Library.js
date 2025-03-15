@@ -1,14 +1,18 @@
-const { printBooks, borrowBook } = require("./Books");
-const { printUsers, borrowUser } = require("./Users");
+const { printBooks, borrowBook, initBooks } = require("./Books");
+const { printUsers, borrowUser, initUsers } = require("./Users");
 
+const main = async () => {
+
+initBooks();
+initUsers();
 console.log("Books:");
 printBooks();
 console.log("\nRegistered Users:");
 printUsers();
-
 try {
-  const book = borrowBook(1);
-  const user = borrowUser(101);
+  const args = process.argv.slice(2);
+  const book = borrowBook(Number(args[0]));
+  const user = await borrowUser(Number(args[1])); 
 
   console.log("\nBorrow Request:");
   console.log(
@@ -33,6 +37,9 @@ try {
   console.error("Error:", error.message);
 }
 
+
+
+
 console.log("\nTesting invalid inputs:");
 try {
   borrowBook(999);
@@ -45,3 +52,5 @@ try {
 } catch (error) {
   console.error(error.message);
 }
+}
+main();

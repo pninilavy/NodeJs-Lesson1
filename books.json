@@ -1,0 +1,20 @@
+[
+  {
+    "code": 1,
+    "name": "aaa",
+    "type": "a",
+    "borrowed": false
+  },
+  {
+    "code": 2,
+    "name": "bbb",
+    "type": "b",
+    "borrowed": true
+  },
+  {
+    "code": 3,
+    "name": "ccc",
+    "type": "c",
+    "borrowed": false
+  }
+]
