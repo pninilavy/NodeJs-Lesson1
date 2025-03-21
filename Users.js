@@ -19,27 +19,29 @@ const readUsers = () => {
       if (err) {
         rej("Error reading users file: " + err);
       } else {
-        res(JSON.parse(data)); 
+        res(JSON.parse(data));
       }
     });
   });
 };
 const printUsers = async () => {
-  try {
-    const users = await readUsers(); 
+  fs.readFile("user.json", "utf8", (err, data) => {
+    if (err) {
+      console.log("The error is:", err);
+      return;
+    }
+    const users = JSON.parse(data);
     users.forEach((user) => {
       console.log(
         `ID: ${user.id}, Name: ${user.name}, Favorite Type: ${user.favoriteType}, Borrowed: ${user.borrowed}`
       );
     });
-  } catch (error) {
-    console.error("Error printing users:", error);
-  }
+  });
 };
 
 const borrowUser = async (id) => {
   try {
-    const myUsers = await readUsers(); 
+    const myUsers = await readUsers();
     let user = myUsers.find((u) => u.id === id);
     if (!user) throw new Error("The user ID is not valid");
     return user;
@@ -48,15 +50,13 @@ const borrowUser = async (id) => {
   }
 };
 
-const initUsers = () => {
- fs.exists("users.json", (exists) => {
-  if (!exists) {
-  
-    const data = JSON.stringify(users, null, 2);
-    fs.writeFile("users.json", data, "utf-8", () => {});}
- })}
-    
+const initUsers = async () => {
+  try {
+    const jsonData = JSON.stringify(arrUser, null, 2);
+    await fs.promises.writeFile("user.json", jsonData, "utf8");
+  } catch (err) {
+    console.log("The error is:", err);
+  }
+};
 
-
-
-module.exports = { User, printUsers, borrowUser ,initUsers};
+module.exports = { User, printUsers, borrowUser, initUsers };

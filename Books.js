@@ -15,26 +15,40 @@ class Book {
 }
 
 const printBooks = () => {
-  const myBooks = JSON.parse(fs.readFileSync("books.json", "utf-8"));
-  myBooks.forEach((book) => {
-    console.log(
-      `Code: ${book.code}, Name: ${book.name}, Type: ${book.type}, Borrowed: ${book.borrowed}`
-    );
-  });
+  try {
+    const data = fs.readFileSync("books.json", "utf8");
+    const books = JSON.parse(data);
+    for (const index in books) {
+      const b = books[index];
+      console.log(`${b.code} ${b.name} ${b.type} ${b.taked}\n`);
+    }
+  } catch (err) {
+    console.log("the error is: ", err);
+  }
 };
 
 const borrowBook = (code) => {
-  const myBooks = JSON.parse(fs.readFileSync("books.json", "utf-8"));
-  let book = myBooks.find((b) => b.code === code);
-  if (!book) throw new Error("The book code is not valid");
-  return book;
+ try {
+   const data = fs.readFileSync("books.json", "utf8");
+   const books = JSON.parse(data);
+   const book = books.find((b) => b.code === c);
+   if (book) {
+     return book;
+   } else {
+     throw new Error("This code doesn't exist");
+   }
+ } catch (err) {
+   console.log("The error is:", err);
+ }
 };
 
 const initBooks = () => {
- if (!fs.existsSync("books.json")) {
-   
-    const data = JSON.stringify(books, null, 2);
-    fs.writeFileSync("books.json", data, "utf-8");}
+  try {
+    const jsonData = JSON.stringify(arrBook, null, 2);
+    fs.writeFileSync("books.json", jsonData, "utf8");
+  } catch (err) {
+    console.log("the error is: ", err);
+  }
     
 };
 
