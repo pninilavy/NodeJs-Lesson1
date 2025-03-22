@@ -3,6 +3,8 @@ const users = [
   { id: 102, name: "bbb", favoriteType: "b", borrowed: true },
   { id: 103, name: "ccc", favoriteType: "c", borrowed: false },
 ];
+const xlsx = require("xlsx");
+
 const fs = require("fs");
 class User {
   constructor(id, name, favoriteType, borrowed) {
@@ -58,5 +60,35 @@ const initUsers = async () => {
     console.log("The error is:", err);
   }
 };
+const writeUsersToExcel=()=>{
+const worksheet = xlsx.utils.json_to_sheet(users);
+const workbook = xlsx.utils.book_new();
+xlsx.utils.book_append_sheet(workbook, worksheet, "users");
+const filePath = "Users.xlsx";
+xlsx.writeFile(workbook, filePath);
+}
+const readUsersToExcel=()=>{
+  const filePath = "Users.xlsx";
+  const workbook = xlsx.readFile(filePath);
 
-module.exports = { User, printUsers, borrowUser, initUsers };
+  const sheetName = workbook.SheetNames[0]; 
+  const worksheet = workbook.Sheets[sheetName];
+
+  return xlsx.utils.sheet_to_json(worksheet);
+}
+const getUserById=(id)=>{
+  const myUsers = readUsersToExcel();
+  const user= myUsers.find((user) => user.id == id);
+  console.log(user)
+  return user;
+}
+
+module.exports = {
+  User,
+  printUsers,
+  borrowUser,
+  initUsers,
+  writeUsersToExcel,
+  readUsersToExcel,
+  getUserById,
+};

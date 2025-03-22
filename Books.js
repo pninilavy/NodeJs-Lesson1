@@ -3,6 +3,7 @@ const books = [
   { code: 2, name: "bbb", type: "b", borrowed: true },
   { code: 3, name: "ccc", type: "c", borrowed: false },
 ];
+const xlsx = require("xlsx");
 const fs = require("fs");
 
 class Book {
@@ -51,5 +52,35 @@ const initBooks = () => {
   }
     
 };
+const writeBooksToExcel=()=>{
+const worksheet = xlsx.utils.json_to_sheet(books);
+const workbook = xlsx.utils.book_new();
+xlsx.utils.book_append_sheet(workbook, worksheet, "books");
+const filePath = "Books.xlsx";
+xlsx.writeFile(workbook, filePath);
+}
+const readBooksToExcel=()=>{
+  const filePath = "Books.xlsx";
+  const workbook = xlsx.readFile(filePath);
 
-module.exports = { Book, printBooks, borrowBook, initBooks };
+  const sheetName = workbook.SheetNames[0]; 
+  const worksheet = workbook.Sheets[sheetName];
+
+  return xlsx.utils.sheet_to_json(worksheet);
+}
+const getBookById=(id)=>{
+  const myBooks = readBooksToExcel();
+  const book=myBooks.find((book) => book.code == id);
+  console.log(book);
+  return book;
+}
+
+module.exports = {
+  Book,
+  printBooks,
+  borrowBook,
+  initBooks,
+  writeBooksToExcel,
+  readBooksToExcel,
+  getBookById,
+};
